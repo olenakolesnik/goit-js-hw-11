@@ -2,7 +2,7 @@
 import iziToast from 'izitoast';
 import "izitoast/dist/css/iziToast.min.css";
 import { getImagesByQuery } from './js/pixabay-api';
-import { createGallery } from './js/render-functions';
+import { createGallery, clearGallery, showLoader, hideLoader } from './js/render-functions';
 
 
 
@@ -10,7 +10,7 @@ const searchForm = document.querySelector('.form');
 const searchInput = document.querySelector('.input-form');
 const submitBtn = document.querySelector('.submit-btn');
 const galleryList = document.querySelector('.gallery');
-const loader = document.querySelector('.loader');
+
 
 searchForm.addEventListener('submit', event => {
     event.preventDefault();
@@ -20,8 +20,8 @@ searchForm.addEventListener('submit', event => {
         iziToast.warning({message: "Please enter a search query!", position: "topRight"});
         return;
     }
-    galleryList.innerHTML = '';
-    loader.classList.remove('hidden');
+    clearGallery(); 
+    showLoader();
     getImagesByQuery(query)
    
         .then(data => {
@@ -36,8 +36,8 @@ searchForm.addEventListener('submit', event => {
             iziToast.error({ message: error.message });
         })
         .finally(() => {
-            loader.classList.add('hidden');
-    });
+            hideLoader(); 
+        });
 });
 
 
